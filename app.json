@@ -24,7 +24,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.vskelton25.newchatapp"
+      "package": "com.vskelton25.newchatapp",
+      "gradleVersion": "8.10.2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
