@@ -1,15 +1,27 @@
 import { useState } from "react";
-import { StyleSheet, View, Text, Button, TouchableOpacity, TextInput, ImageBackground } from "react-native";
-
+import { StyleSheet, View, Text, Button, TouchableOpacity, TextInput, ImageBackground, Alert } from "react-native";
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
   const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(''); // State to hold the selected color
 
+  const auth = getAuth();
+
+  const signInUser = () => {
+    signInAnonymously(auth).then(res => {
+      console.log("Start.js - res.user.uid:", res.user.uid);
+      navigation.navigate("Chat", { userID: res.user.uid, name: name, color: selectedBackgroundColor })
+      Alert.alert("Signed in successfully");
+    }).catch(err => {
+      Alert.alert("Unable to sign in, try again later")
+    });
+  }
+
   const handleColorSelection = (color) => {
     setSelectedBackgroundColor(color);
-    navigation.navigate('Chat', { name: name, color: color });
   };
+
 
   return (
     <ImageBackground
@@ -19,37 +31,37 @@ const Start = ({ navigation }) => {
       <View style={styles.container}>
         <Text style={styles.title}>Let's Chat!</Text>
         <View style={styles.box}>
-        <TextInput
-          style={styles.textInput}
-          value={name}
-          onChangeText={setName}
-          placeholder='Your Name'
-        />
-        <View>
-          <Text style={styles.backgroundColor}>Choose Background Color:</Text>
-        </View>
-        <View style={styles.colorOptions}>
-          <TouchableOpacity
-            style={[styles.colorOption, { backgroundColor: styles.color1.backgroundColor }]}
-            onPress={() => handleColorSelection(styles.color1.backgroundColor)}
+          <TextInput
+            style={styles.textInput}
+            value={name}
+            onChangeText={setName}
+            placeholder='Your Name'
           />
-          <TouchableOpacity
-            style={[styles.colorOption, { backgroundColor: styles.color2.backgroundColor }]}
-            onPress={() => handleColorSelection(styles.color2.backgroundColor)}
+          <View>
+            <Text style={styles.backgroundColor}>Choose Background Color:</Text>
+          </View>
+          <View style={styles.colorOptions}>
+            <TouchableOpacity
+              style={[styles.colorOption, { backgroundColor: styles.color1.backgroundColor }]}
+              onPress={() => handleColorSelection(styles.color1.backgroundColor)}
+            />
+            <TouchableOpacity
+              style={[styles.colorOption, { backgroundColor: styles.color2.backgroundColor }]}
+              onPress={() => handleColorSelection(styles.color2.backgroundColor)}
+            />
+            <TouchableOpacity
+              style={[styles.colorOption, { backgroundColor: styles.color3.backgroundColor }]}
+              onPress={() => handleColorSelection(styles.color3.backgroundColor)}
+            />
+            <TouchableOpacity
+              style={[styles.colorOption, { backgroundColor: styles.color4.backgroundColor }]}
+              onPress={() => handleColorSelection(styles.color4.backgroundColor)}
+            />
+          </View>
+          <Button
+            title="Go to Chat"
+            onPress={signInUser}
           />
-          <TouchableOpacity
-            style={[styles.colorOption, { backgroundColor: styles.color3.backgroundColor }]}
-            onPress={() => handleColorSelection(styles.color3.backgroundColor)}
-          />
-          <TouchableOpacity
-            style={[styles.colorOption, { backgroundColor: styles.color4.backgroundColor }]}
-            onPress={() => handleColorSelection(styles.color4.backgroundColor)}
-          />
-        </View>
-        <Button
-          title="Go to Chat"
-          onPress={() => navigation.navigate('Chat', { name: name, color: selectedBackgroundColor })}
-        />
         </View>
       </View>
     </ImageBackground>
@@ -100,21 +112,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 20,
   },
-  colorOption:{
+  colorOption: {
     width: 50,
     height: 50,
     borderRadius: 25,
   },
-  color1:{
+  color1: {
     backgroundColor: '#474056',
   },
-  color2:{
+  color2: {
     backgroundColor: '#090C08',
   },
-  color3:{
+  color3: {
     backgroundColor: '#8A95A5',
   },
-  color4:{
+  color4: {
     backgroundColor: '#B9C6AE',
   }
 });
