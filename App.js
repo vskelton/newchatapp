@@ -12,6 +12,8 @@ import { useNetInfo } from '@react-native-community/netinfo';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const connectionStatus = useNetInfo();
+
   const firebaseConfig = {
     apiKey: "AIzaSyAhHigLeCbnJQTh_HBREjpY0SecUlArlj0",
     authDomain: "newchatapp-af94f.firebaseapp.com",
@@ -27,16 +29,15 @@ const App = () => {
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
   const storage = getStorage(app);
-  const netInfo = useNetInfo();
 
   useEffect(() => {
-    if (netInfo.isConnected === false) {
+    if (connectionStatus.isConnected === false) {
       Alert.alert("Connection lost")
       disableNetwork(db);
-    } else if (netInfo.isConnected === true) {
+    } else if (connectionStatus.isConnected === true) {
       enableNetwork(db);
     }
-  }, [netInfo.isConnected]);
+  }, [connectionStatus.isConnected]);
 
 
   return (
@@ -50,7 +51,7 @@ const App = () => {
         />
         <Stack.Screen
           name="Chat">
-          {props => <Chat db={db} storage={storage} isConnected={netInfo.isConnected} {...props} />}
+          {props => <Chat db={db} storage={storage} isConnected={connectionStatus.isConnected} {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

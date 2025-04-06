@@ -22,18 +22,19 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
 
       const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
       unsubMessages = onSnapshot(q, (docs) => {
-        let newMessages = [];
-        docs.forEach(doc => {
-          newMessages.push({
-            id: doc.id,
-            ...doc.data(),
-            createdAt: new Date(doc.data().createdAt.toMillis())
+          let newMessages = [];
+          docs.forEach(doc => {
+            newMessages.push({
+              id: doc.id,
+              ...doc.data(),
+              createdAt: new Date(doc.data().createdAt.toMillis())
+            })
           })
+          cacheMessages(newMessages);
+          setMessages(newMessages);
         })
-        cacheMessages(newMessages);
-        setMessages(newMessages);
-      })
-    } else loadCachedMessages();
+      } else loadCachedMessages();
+        
 
     return () => {
       if (unsubMessages) unsubMessages();
@@ -41,7 +42,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
   }, [isConnected]);
 
   const loadCachedMessages = async () => {
-    const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
+    const cachedMessages = await AsyncStorage.getItem("messages") || [];
     setMessages(JSON.parse(cachedMessages));
   };
 
@@ -49,17 +50,16 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     try {
       await AsyncStorage.setItem('messages', JSON.stringify(messagesToCache));
     } catch (error) {
-      console.error('Failed to cache messages', error);
+      console.log(error.message);
     }
-  };
-
+  }
 
   const onSend = (newMessages) => {
     addDoc(collection(db, "messages"), newMessages[0])
   }
 
   const renderInputToolbar = (props) => {
-    if (isConnected) return <InputToolbar {...props} />;
+    if (isConnected === true) return <InputToolbar {...props} />;
     else return null;
   }
 
@@ -78,18 +78,15 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
   }
 
   const renderCustomActions = (props) => {
-    return <CustomActions 
-    userID={userID} 
-    storage={storage}
-    onSend={onSend} 
-    {...props} />
+    return <CustomActions
+      userID={userID}
+      storage={storage}
+      {...props} />
   };
 
   const renderCustomView = (props) => {
     const { currentMessage } = props;
-    console.log("renderCustomView currentMessage:", currentMessage)
     if (currentMessage.location) {
-      console.log("renderCustomView location data:", currentMessage.location);
       return (
         <MapView
           style={{
