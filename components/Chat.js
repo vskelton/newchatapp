@@ -22,19 +22,19 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
 
       const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
       unsubMessages = onSnapshot(q, (docs) => {
-          let newMessages = [];
-          docs.forEach(doc => {
-            newMessages.push({
-              id: doc.id,
-              ...doc.data(),
-              createdAt: new Date(doc.data().createdAt.toMillis())
-            })
+        let newMessages = [];
+        docs.forEach(doc => {
+          newMessages.push({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: new Date(doc.data().createdAt.toMillis())
           })
-          cacheMessages(newMessages);
-          setMessages(newMessages);
         })
-      } else loadCachedMessages();
-        
+        cacheMessages(newMessages);
+        setMessages(newMessages);
+      })
+    } else loadCachedMessages();
+
 
     return () => {
       if (unsubMessages) unsubMessages();
@@ -57,6 +57,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
   const onSend = (newMessages) => {
     addDoc(collection(db, "messages"), newMessages[0])
   }
+
 
   const renderInputToolbar = (props) => {
     if (isConnected === true) return <InputToolbar {...props} />;
@@ -81,6 +82,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     return <CustomActions
       userID={userID}
       storage={storage}
+      onSend={onSend}
       {...props} />
   };
 

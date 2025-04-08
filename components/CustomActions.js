@@ -56,6 +56,8 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, storage, onSend, userID })
       const location = await Location.getCurrentPositionAsync({});
       if (location) {
         onSend({
+          _id: `${new Date().getTime()}-${userID}`,
+          user: { _id: userID, name },
           location: {
             longitude: location.coords.longitude,
             latitude: location.coords.latitude,
@@ -66,7 +68,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, storage, onSend, userID })
   }
 
   const generateReference = (uri) => {
-    const imageName = uri.split("/").pop(); // Get the last part of the URI
+    const imageName = uri.split("/")[uri.split("/").length - 1];
     const timeStamp = (new Date()).getTime();
     return `${userID}-${timeStamp}-${imageName}`;
   };
@@ -80,7 +82,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, storage, onSend, userID })
       const imageURL = await getDownloadURL(snapshot.ref)
       onSend({ image: imageURL })
     });
-  }
+  };
 
   return (
     <TouchableOpacity style={styles.container} onPress={onActionPress}>
