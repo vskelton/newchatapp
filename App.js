@@ -51,7 +51,12 @@ const App = () => {
         />
         <Stack.Screen
           name="Chat">
-          {props => <Chat db={db} storage={storage} isConnected={connectionStatus.isConnected} {...props} />}
+          {props => <Chat 
+          isConnected={connectionStatus.isConnected}
+          db={db}
+          storage={storage}
+          {...props}
+           />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

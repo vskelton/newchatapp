@@ -16,7 +16,6 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
   useEffect(() => {
     navigation.setOptions({ title: name });
     if (isConnected === true) {
-
       if (unsubMessages) unsubMessages();
       unsubMessages = null;
 
@@ -25,7 +24,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         let newMessages = [];
         docs.forEach(doc => {
           newMessages.push({
-            id: doc.id,
+            _id: doc.id,
             ...doc.data(),
             createdAt: new Date(doc.data().createdAt.toMillis())
           })
@@ -34,7 +33,6 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         setMessages(newMessages);
       })
     } else loadCachedMessages();
-
 
     return () => {
       if (unsubMessages) unsubMessages();
@@ -54,10 +52,16 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     }
   }
 
-  const onSend = (newMessages) => {
-    addDoc(collection(db, "messages"), newMessages[0])
+  const onSend = async (newMessages) => {
+    console.log('onSend in Chat.js called with:', newMessages);
+    try {
+      await addDoc(collection(db, "messages"), newMessages[0]);
+      console.log('Message sent to Firestore successfully!');
+    } catch (error) {
+      console.error('Error sending message to Firestore:', error);
+      // Optionally, display an error message to the user
+    }
   }
-
 
   const renderInputToolbar = (props) => {
     if (isConnected === true) return <InputToolbar {...props} />;
@@ -82,8 +86,8 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     return <CustomActions
       userID={userID}
       storage={storage}
-      onSend={onSend}
-      {...props} />
+      onSend={onSend} // Make sure this is the correct onSend function from Chat.js
+      {...props} />;
   };
 
   const renderCustomView = (props) => {
@@ -119,8 +123,8 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         renderActions={renderCustomActions}
         renderCustomView={renderCustomView}
         user={{
-          _id: route.params.userID,
-          name: name
+          _id: userID,
+          name
         }}
       />
       {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}

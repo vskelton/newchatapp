@@ -25,7 +25,12 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.vskelton25.newchatapp",
-      "gradleVersion": "8.10.2"
+      "gradleVersion": "8.10.2",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCWKIaV6otCctrBJIDEzHyWWsnxoGjc1rA"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
