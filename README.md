@@ -36,3 +36,12 @@ If using Expo, you can use:
 ```bash
 npx expo start
 ```
+
+## Firebase Setup
+
+To use Firebase with this app, you will need to set up a Firebase project and replace the Firebase configuration in the App.js file.
+
+Go to the Google Firebase console.
+Create a new Firebase Project.
+Add Firebase Authenication, Firestore, and Firebase Storage to your project.
+Copy the Firebase configuration and paste it into the firebaseConfig object in App.js
