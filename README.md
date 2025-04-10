@@ -45,3 +45,11 @@ Go to the Google Firebase console.
 Create a new Firebase Project.
 Add Firebase Authenication, Firestore, and Firebase Storage to your project.
 Copy the Firebase configuration and paste it into the firebaseConfig object in App.js
+
+## Dependencies
+
+firebase: For interacting with Firebase services, like Firestore and Firebase Storage
+@react-navigation/native: For navigation between screens.
+react-native-maps: For displaying the user location on a map
+@react-native-community/netinfor: To monitor the network connection status
+expo-image-picker: To allow users to pick images from the photo gallery on the device
