@@ -48,8 +48,8 @@ Copy the Firebase configuration and paste it into the firebaseConfig object in A
 
 ## Dependencies
 
-firebase: For interacting with Firebase services, like Firestore and Firebase Storage
-@react-navigation/native: For navigation between screens.
-react-native-maps: For displaying the user location on a map
-@react-native-community/netinfor: To monitor the network connection status
-expo-image-picker: To allow users to pick images from the photo gallery on the device
+- firebase: For interacting with Firebase services, like Firestore and Firebase Storage
+- @react-navigation/native: For navigation between screens.
+- react-native-maps: For displaying the user location on a map
+- @react-native-community/netinfor: To monitor the network connection status
+- expo-image-picker: To allow users to pick images from the photo gallery on the device
