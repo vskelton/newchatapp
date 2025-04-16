@@ -53,3 +53,8 @@ Copy the Firebase configuration and paste it into the firebaseConfig object in A
 - react-native-maps: For displaying the user location on a map
 - @react-native-community/netinfor: To monitor the network connection status
 - expo-image-picker: To allow users to pick images from the photo gallery on the device
+
+## Chat App Demo
+
+This video demonstrates how to use the chat app:
+![Chat App Demo](https://youtube.com/shorts/WrpHwdf09ko?feature=share)
