@@ -57,4 +57,4 @@ Copy the Firebase configuration and paste it into the firebaseConfig object in A
 ## Chat App Demo
 
 This video demonstrates how to use the chat app:
-![Chat App Demo](https://youtube.com/shorts/WrpHwdf09ko?feature=share)
+[![Chat App Demo](./assets/Chatapphome.png)](https://youtube.com/shorts/WrpHwdf09ko?feature=share)
